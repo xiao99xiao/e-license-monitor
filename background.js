@@ -16,7 +16,7 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   } else if (message.action === 'elementFound') {
     if (message.slotData) {
       const slotInfo = `time: ${message.slotData.time}, date: ${message.slotData.date}, week: ${message.slotData.week}`;
-      addDebugLog(`🎯 Element ${message.elementIndex}/${message.totalElements} found! ${slotInfo}`);
+      addDebugLog(`🎯 ${message.slotData.type.toUpperCase()} element ${message.elementIndex}/${message.totalElements} found! ${slotInfo}`);
     } else {
       addDebugLog('🎯 Element found! Alert sent to ntfy.sh');
     }

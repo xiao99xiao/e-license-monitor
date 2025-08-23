@@ -33,35 +33,39 @@ async function checkElementOnCurrentPage() {
     return;
   }
   
-  console.log("[DEBUG] content: Checking for .simei element on current page");
+  console.log("[DEBUG] content: Checking for .simei elements on current page");
   
   try {
-    const elements = document.querySelectorAll('a.simei');
+    const simeiElements = document.querySelectorAll('a.simei');
     
-    if (elements.length > 0) {
-      console.log(`[DEBUG] content: Found ${elements.length} element(s) with class='simei'!`);
+    if (simeiElements.length > 0) {
+      console.log(`[DEBUG] content: Found ${simeiElements.length} simei elements!`);
       
-      elements.forEach((link, index) => {
+      const allSlotData = [];
+      
+      simeiElements.forEach((link, index) => {
         const slotData = {
+          type: 'simei',
           time: link.getAttribute("data-time"),
           date: link.getAttribute("data-date"),
           week: link.getAttribute("data-week"),
           url: window.location.href,
         };
         
-        console.log(`[DEBUG] content: Element ${index + 1} data:`, slotData);
+        console.log(`[DEBUG] content: Simei element ${index + 1} data:`, slotData);
+        allSlotData.push(slotData);
         
         chrome.runtime.sendMessage({
           action: 'elementFound',
           slotData: slotData,
           elementIndex: index + 1,
-          totalElements: elements.length
+          totalElements: simeiElements.length
         });
       });
       
-      sendAlert();
+      sendAlert(allSlotData);
     } else {
-      console.log("[DEBUG] content: Element with class='simei' not found");
+      console.log("[DEBUG] content: No simei elements found");
       chrome.runtime.sendMessage({action: 'elementNotFound'});
     }
     
@@ -170,8 +174,14 @@ async function refreshPageData() {
   }
 }
 
-function sendAlert() {
+function sendAlert(allSlotData) {
   try {
+    const slotStrings = allSlotData.map(slot => `${slot.date} ${slot.time}`);
+    const uniqueSlotStrings = [...new Set(slotStrings)];
+    const message = `New Slot!! ${uniqueSlotStrings.join(', ')}`;
+    
+    console.log("[DEBUG] content: Sending alert message:", message);
+    
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "https://ntfy.sh/reserve_alert_xiao", true);
     xhr.setRequestHeader("Content-Type", "text/plain; charset=UTF-8");
@@ -182,7 +192,7 @@ function sendAlert() {
           chrome.runtime.sendMessage({
             action: 'monitoringStatus',
             status: 'alert_sent',
-            details: 'Successfully sent to ntfy.sh'
+            details: `Successfully sent: ${message}`
           });
         } else {
           chrome.runtime.sendMessage({
@@ -202,7 +212,7 @@ function sendAlert() {
       });
     };
     
-    xhr.send("found");
+    xhr.send(message);
   } catch (error) {
     chrome.runtime.sendMessage({
       action: 'monitoringStatus',
