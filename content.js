@@ -113,6 +113,9 @@ async function performUIAutomation() {
       status: 'automation_failed',
       details: error.message
     });
+    
+    sendUrgentAlert();
+    
     console.log("[DEBUG] content: UI automation failed, scheduling next attempt");
     scheduleUIAutomation();
   }
@@ -217,6 +220,50 @@ function sendAlert(allSlotData) {
     chrome.runtime.sendMessage({
       action: 'monitoringStatus',
       status: 'alert_failed',
+      details: error.message
+    });
+  }
+}
+
+function sendUrgentAlert() {
+  try {
+    console.log("[DEBUG] content: Sending urgent alert - page down");
+    
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://ntfy.sh/reserve_alert_xiao", true);
+    xhr.setRequestHeader("Content-Type", "text/plain; charset=UTF-8");
+    
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          chrome.runtime.sendMessage({
+            action: 'monitoringStatus',
+            status: 'urgent_alert_sent',
+            details: 'Successfully sent urgent alert'
+          });
+        } else {
+          chrome.runtime.sendMessage({
+            action: 'monitoringStatus',
+            status: 'urgent_alert_failed',
+            details: `HTTP ${xhr.status}: ${xhr.statusText}`
+          });
+        }
+      }
+    };
+    
+    xhr.onerror = function() {
+      chrome.runtime.sendMessage({
+        action: 'monitoringStatus',
+        status: 'urgent_alert_failed',
+        details: 'Network error on urgent alert'
+      });
+    };
+    
+    xhr.send("URGENT, page down!");
+  } catch (error) {
+    chrome.runtime.sendMessage({
+      action: 'monitoringStatus',
+      status: 'urgent_alert_failed',
       details: error.message
     });
   }

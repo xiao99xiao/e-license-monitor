@@ -96,8 +96,8 @@ async function addDebugLog(message) {
     const logs = result.debugLogs || [];
     logs.unshift(logEntry);
     
-    if (logs.length > 20) {
-      logs.splice(20);
+    if (logs.length > 30) {
+      logs.splice(30);
     }
     
     await chrome.storage.local.set({debugLogs: logs});
