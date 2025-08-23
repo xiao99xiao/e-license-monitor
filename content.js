@@ -1,6 +1,7 @@
 let monitoringInterval = null;
 let isMonitoring = false;
 let lastRefreshTime = 0;
+let lastSentMessage = null;
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("[DEBUG] content: Received message:", message.action);
@@ -183,6 +184,16 @@ function sendAlert(allSlotData) {
     const uniqueSlotStrings = [...new Set(slotStrings)];
     const message = `New Slot!! ${uniqueSlotStrings.join(', ')}`;
     
+    if (message === lastSentMessage) {
+      console.log("[DEBUG] content: Duplicate message detected, skipping ntfy send:", message);
+      chrome.runtime.sendMessage({
+        action: 'monitoringStatus',
+        status: 'alert_skipped',
+        details: `Duplicate message skipped: ${message}`
+      });
+      return;
+    }
+    
     console.log("[DEBUG] content: Sending alert message:", message);
     
     const xhr = new XMLHttpRequest();
@@ -192,6 +203,7 @@ function sendAlert(allSlotData) {
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
+          lastSentMessage = message;
           chrome.runtime.sendMessage({
             action: 'monitoringStatus',
             status: 'alert_sent',
@@ -227,6 +239,18 @@ function sendAlert(allSlotData) {
 
 function sendUrgentAlert() {
   try {
+    const message = "URGENT, page down!";
+    
+    if (message === lastSentMessage) {
+      console.log("[DEBUG] content: Duplicate urgent message detected, skipping ntfy send:", message);
+      chrome.runtime.sendMessage({
+        action: 'monitoringStatus',
+        status: 'urgent_alert_skipped',
+        details: `Duplicate urgent message skipped: ${message}`
+      });
+      return;
+    }
+    
     console.log("[DEBUG] content: Sending urgent alert - page down");
     
     const xhr = new XMLHttpRequest();
@@ -236,6 +260,7 @@ function sendUrgentAlert() {
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
+          lastSentMessage = message;
           chrome.runtime.sendMessage({
             action: 'monitoringStatus',
             status: 'urgent_alert_sent',
@@ -259,7 +284,7 @@ function sendUrgentAlert() {
       });
     };
     
-    xhr.send("URGENT, page down!");
+    xhr.send(message);
   } catch (error) {
     chrome.runtime.sendMessage({
       action: 'monitoringStatus',
