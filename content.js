@@ -1,7 +1,6 @@
 let monitoringInterval = null;
 let isMonitoring = false;
 let lastRefreshTime = 0;
-let lastSentMessage = null;
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("[DEBUG] content: Received message:", message.action);
@@ -178,11 +177,14 @@ async function refreshPageData() {
   }
 }
 
-function sendAlert(allSlotData) {
+async function sendAlert(allSlotData) {
   try {
     const slotStrings = allSlotData.map(slot => `${slot.date} ${slot.time}`);
     const uniqueSlotStrings = [...new Set(slotStrings)];
     const message = `New Slot!! ${uniqueSlotStrings.join(', ')}`;
+    
+    const result = await chrome.storage.local.get(['lastSentMessage']);
+    const lastSentMessage = result.lastSentMessage;
     
     if (message === lastSentMessage) {
       console.log("[DEBUG] content: Duplicate message detected, skipping ntfy send:", message);
@@ -200,10 +202,10 @@ function sendAlert(allSlotData) {
     xhr.open("POST", "https://ntfy.sh/reserve_alert_xiao", true);
     xhr.setRequestHeader("Content-Type", "text/plain; charset=UTF-8");
     
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = async function() {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
-          lastSentMessage = message;
+          await chrome.storage.local.set({lastSentMessage: message});
           chrome.runtime.sendMessage({
             action: 'monitoringStatus',
             status: 'alert_sent',
@@ -237,9 +239,12 @@ function sendAlert(allSlotData) {
   }
 }
 
-function sendUrgentAlert() {
+async function sendUrgentAlert() {
   try {
     const message = "URGENT, page down!";
+    
+    const result = await chrome.storage.local.get(['lastSentMessage']);
+    const lastSentMessage = result.lastSentMessage;
     
     if (message === lastSentMessage) {
       console.log("[DEBUG] content: Duplicate urgent message detected, skipping ntfy send:", message);
@@ -257,10 +262,10 @@ function sendUrgentAlert() {
     xhr.open("POST", "https://ntfy.sh/reserve_alert_xiao", true);
     xhr.setRequestHeader("Content-Type", "text/plain; charset=UTF-8");
     
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = async function() {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
-          lastSentMessage = message;
+          await chrome.storage.local.set({lastSentMessage: message});
           chrome.runtime.sendMessage({
             action: 'monitoringStatus',
             status: 'urgent_alert_sent',
