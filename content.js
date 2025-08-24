@@ -181,7 +181,15 @@ async function sendAlert(allSlotData) {
   try {
     const slotStrings = allSlotData.map(slot => `${slot.date} ${slot.time}`);
     const uniqueSlotStrings = [...new Set(slotStrings)];
-    const message = `New Slot!! ${uniqueSlotStrings.join(', ')}`;
+    
+    const numSlots = uniqueSlotStrings.length;
+    let emoji = '';
+    if (numSlots === 1) emoji = '😊';
+    else if (numSlots === 2) emoji = '😄';
+    else if (numSlots === 3) emoji = '🤩';
+    else if (numSlots >= 4) emoji = '🎉';
+    
+    const message = `有空位啦！ ${uniqueSlotStrings.join(', ')} ${emoji}`;
     
     const result = await chrome.storage.local.get(['lastSentMessage']);
     const lastSentMessage = result.lastSentMessage;
