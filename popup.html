@@ -92,6 +92,57 @@
       background: #d32f2f;
     }
     
+    .config-section {
+      border-top: 1px solid #e0e0e0;
+      padding-top: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .config-title {
+      font-weight: 600;
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 8px;
+    }
+    
+    .config-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #555;
+    }
+    
+    input[type="text"] {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: monospace;
+    }
+    
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #4caf50;
+      box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+    }
+    
+    .save-btn {
+      background: #2196f3;
+      color: white;
+      padding: 6px 12px;
+      font-size: 12px;
+      align-self: flex-start;
+    }
+    
+    .save-btn:hover {
+      background: #1976d2;
+    }
+    
     .debug-section {
       border-top: 1px solid #e0e0e0;
       padding-top: 12px;
@@ -138,6 +189,21 @@
   <div class="controls">
     <button id="startBtn" class="start-btn">Start Monitor</button>
     <button id="stopBtn" class="stop-btn">Stop Monitor</button>
+  </div>
+  
+  <div class="config-section">
+    <div class="config-title">Configuration</div>
+    <div class="config-item">
+      <label for="simeiSelectorInput">Slot Elements Selector:</label>
+      <input type="text" id="simeiSelectorInput" placeholder="a.simei" />
+    </div>
+    <div class="config-item">
+      <label for="selectorInput">Reservation Link Selector:</label>
+      <input type="text" id="selectorInput" placeholder="a[data-kamoku='0']" />
+    </div>
+    <div class="config-item">
+      <button id="saveConfigBtn" class="save-btn">Save Configuration</button>
+    </div>
   </div>
   
   <div class="debug-section">
