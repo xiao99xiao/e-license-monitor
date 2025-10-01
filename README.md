@@ -1,4 +1,6 @@
-# E-License 监控器
+# 日本の自動車教習所予約ヘルパー Chrome 拡張機能
+
+[中文 (简体) 🇨🇳](README.md) | [English 🇺🇸](README.en.md) | [日本語 🇯🇵](README.ja.md)
 
 一个 Chrome 扩展程序，用于监控 e-license.jp 网站的预约空位并发送自动通知。
 
