@@ -13,6 +13,7 @@ This is a Chrome extension called "E-License Monitor" that monitors the e-licens
 ## Core Architecture
 
 ### Monitoring Flow
+
 1. User starts monitoring via popup UI
 2. Content script searches for `a.simei` elements on e-license.jp pages
 3. When slots found, extracts time/date/week data and sends alerts via ntfy.sh
@@ -20,12 +21,14 @@ This is a Chrome extension called "E-License Monitor" that monitors the e-licens
 5. Implements 60-second cycle with duplicate message prevention
 
 ### Key Components
+
 - **State Management**: Uses `chrome.storage.local` for persistence across sessions
-- **Alert System**: Sends notifications to `https://ntfy.sh/reserve_alert_xiao` with Chinese text and emojis
+- **Alert System**: Sends notifications to `https://ntfy.sh/e-license-reserve-alert` with Chinese text and emojis
 - **Debug Logging**: Maintains rolling log of 30 entries with timestamps
 - **UI Automation**: Clicks navigation elements to refresh page data
 
 ### Message Communication
+
 - Background ↔ Content: Element found/not found, monitoring status updates
 - Popup ↔ Background/Content: Start/stop monitoring commands
 - All messages include detailed debug information for troubleshooting

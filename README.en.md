@@ -9,7 +9,7 @@ e-license.jp is a solution platform used by multiple Japanese driving schools fo
 ## Features
 
 - 🔍 **Auto Monitoring**: Monitors driving lesson reservation slots on e-license.jp
-- 📱 **Instant Notifications**: Sends Chinese notifications via ntfy.sh
+- 📱 **Instant Notifications**: Sends notifications via ntfy.sh
 - ⚙️ **Configurable Selectors**: Customize monitoring elements and navigation links
 - 🔄 **Auto Refresh**: Automatically refreshes page data every 60 seconds
 - 📊 **Debug Logging**: Detailed runtime status and error information
@@ -17,11 +17,13 @@ e-license.jp is a solution platform used by multiple Japanese driving schools fo
 ## Installation
 
 ### 1. Download Extension
+
 ```bash
 git clone https://github.com/xiao99xiao/e-license-monitor.git
 ```
 
 ### 2. Load into Chrome
+
 1. Open Chrome browser
 2. Navigate to `chrome://extensions/`
 3. Enable "Developer mode" in the top right
@@ -29,11 +31,13 @@ git clone https://github.com/xiao99xiao/e-license-monitor.git
 5. Select the downloaded `checker_chrome` folder
 
 ### 3. Configure Notification Service
+
 1. Download [ntfy.sh app](https://ntfy.sh/)
-2. Subscribe to topic: `reserve_alert_xiao`
+2. Subscribe to topic: `e-license-reserve-alert`
 3. Ensure the app is running in the background
 
-**Note**: Default notification channel is `reserve_alert_xiao`. To change the channel name, modify the ntfy URL in `content.js`:
+**Note**: Default notification channel is `e-license-reserve-alert`. To change the channel name, modify the ntfy URL in `content.js`:
+
 ```javascript
 xhr.open("POST", "https://ntfy.sh/your-channel-name", true);
 ```
@@ -43,17 +47,20 @@ xhr.open("POST", "https://ntfy.sh/your-channel-name", true);
 ### Detailed Steps
 
 1. **Access Driving School Reservation System**
+
    - Open browser and visit your driving school's e-license.jp page
    - Log in to your driving school account
    - Navigate to lesson reservation page (Stage 1, Stage 2, or Exam reservation)
 
 2. **Start Monitoring**
+
    - Click the extension icon (E-License Monitor) in browser toolbar
    - Click "Start Monitor" button in the popup
    - Status shows "Monitoring Active" when monitoring is started
    - Extension will begin monitoring available slots on current page
 
 3. **Monitoring Runtime**
+
    - Extension checks for slots every 60 seconds automatically
    - Sends notifications via ntfy.sh when slots are found
    - View debug logs in popup to understand runtime status
@@ -65,6 +72,7 @@ xhr.open("POST", "https://ntfy.sh/your-channel-name", true);
 ### Configuration Options
 
 #### Slot Elements Selector
+
 Used to specify elements to monitor for lesson reservation slots, different values needed for different stages (Stage 1, Stage 2, Exam):
 
 - **Default**: `a.simei`
@@ -74,6 +82,7 @@ Used to specify elements to monitor for lesson reservation slots, different valu
   - `div.slot-item a`
 
 #### Reservation Link Selector
+
 Used to specify navigation links to lesson reservation pages, different values needed for different stages (Stage 1, Stage 2, Exam):
 
 - **Default**: `a[data-kamoku="0"]`
@@ -82,6 +91,7 @@ Used to specify navigation links to lesson reservation pages, different values n
   - `a[data-action="/el32/pc/reserv/p06/p06a/nav"]`
 
 #### Configuration Steps
+
 1. Modify selector values in extension popup
 2. Click "Save Configuration" to save
 3. Restart monitoring to apply new configuration
@@ -91,7 +101,7 @@ Used to specify navigation links to lesson reservation pages, different values n
 When lesson slots are found, notifications are sent in this format:
 
 ```
-有空位啦！ 2024-01-15 10:00, 2024-01-15 14:00 😄
+🎉 SLOTS AVAILABLE! 2024-01-15 10:00, 2024-01-15 14:00 😄
 ```
 
 ## Troubleshooting
@@ -99,18 +109,21 @@ When lesson slots are found, notifications are sent in this format:
 ### Common Issues
 
 **Q: Monitoring not finding lesson slots**
+
 - Check if selector configuration is correct
 - View error information in debug logs
 - Confirm if webpage element structure has changed
 
 **Q: Not receiving notifications**
+
 - Confirm ntfy.sh app is running
-- Check if subscribed to correct channel: `reserve_alert_xiao`
+- Check if subscribed to correct channel: `e-license-reserve-alert`
 - Check network connection
 - View send status in debug logs
 - To use custom channel, modify ntfy URL in `content.js`
 
 **Q: Configuration not saving**
+
 - Ensure input selectors are not empty
 - Check browser console for errors
 - Reload extension
@@ -118,6 +131,7 @@ When lesson slots are found, notifications are sent in this format:
 ### Debug Information
 
 Extension provides detailed debug information:
+
 - Monitoring status changes
 - Element check results
 - Notification send status
@@ -129,7 +143,7 @@ Extension provides detailed debug information:
 - **Permissions**: `activeTab`, `storage`, `scripting`
 - **Supported Websites**: `*.e-license.jp/*`
 - **Notification Service**: ntfy.sh
-- **Default Notification Channel**: `reserve_alert_xiao`
+- **Default Notification Channel**: `e-license-reserve-alert`
 - **Monitoring Interval**: 60 seconds
 
 ### Custom Notification Channel
@@ -146,11 +160,13 @@ To use custom ntfy channel:
    // In sendUrgentAlert function (around line 275)
    xhr.open("POST", "https://ntfy.sh/your-channel-name", true);
    ```
+
 3. Reload extension
 
 ## Development Information
 
 ### File Structure
+
 ```
 /
 ├── manifest.json          # Extension manifest
@@ -162,6 +178,7 @@ To use custom ntfy channel:
 ```
 
 ### Main Functions
+
 - **Monitoring Flow**: Check page elements → Send notifications → Auto refresh
 - **State Management**: Uses Chrome storage API for persistent configuration
 - **Message Communication**: Popup ↔ Background script ↔ Content script

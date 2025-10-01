@@ -262,7 +262,9 @@ async function sendAlert(allSlotData) {
     else if (numSlots === 3) emoji = "🤩";
     else if (numSlots >= 4) emoji = "🎉";
 
-    const message = `有空位啦！ ${uniqueSlotStrings.join(", ")} ${emoji}`;
+    const message = `🎉 SLOTS AVAILABLE! ${uniqueSlotStrings.join(
+      ", "
+    )} ${emoji}`;
 
     const result = await chrome.storage.local.get(["lastSentMessage"]);
     const lastSentMessage = result.lastSentMessage;
@@ -283,7 +285,7 @@ async function sendAlert(allSlotData) {
     console.log("[DEBUG] content: Sending alert message:", message);
 
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://ntfy.sh/reserve_alert_xiao", true);
+    xhr.open("POST", "https://ntfy.sh/e-license-reserve-alert", true);
     xhr.setRequestHeader("Content-Type", "text/plain; charset=UTF-8");
 
     xhr.onreadystatechange = async function () {
@@ -325,7 +327,7 @@ async function sendAlert(allSlotData) {
 
 async function sendUrgentAlert() {
   try {
-    const message = "URGENT, page down!";
+    const message = "🚨 URGENT! Website issue detected!";
 
     const result = await chrome.storage.local.get(["lastSentMessage"]);
     const lastSentMessage = result.lastSentMessage;
@@ -346,7 +348,7 @@ async function sendUrgentAlert() {
     console.log("[DEBUG] content: Sending urgent alert - page down");
 
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://ntfy.sh/reserve_alert_xiao", true);
+    xhr.open("POST", "https://ntfy.sh/e-license-reserve-alert", true);
     xhr.setRequestHeader("Content-Type", "text/plain; charset=UTF-8");
 
     xhr.onreadystatechange = async function () {
