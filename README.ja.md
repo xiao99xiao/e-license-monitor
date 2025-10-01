@@ -16,7 +16,10 @@
 ## 📱 クイックセットアップ
 
 1. **スマートフォンに ntfy.sh アプリをインストール** して即座の通知を受信
-2. **`content.js` でチャンネルトピックをカスタマイズ**（デフォルト：`e-license-reserve-alert`）
+2. **⚠️ 重要：チャンネル名を必ず変更してください！**
+   - デフォルトチャンネル `e-license-reserve-alert` は共有チャンネルです
+   - 変更しないと他の教習所の生徒からの通知を受信してしまいます
+   - `content.js` で独自のチャンネル名に変更してください
 3. **e-license.jp システムを使用する教習所のみ対応**
 
 ---
@@ -55,10 +58,10 @@ git clone https://github.com/xiao99xiao/e-license-monitor.git
 2. トピックを購読: `e-license-reserve-alert`
 3. アプリがバックグラウンドで実行されていることを確認
 
-**注意**: デフォルトの通知チャンネルは `e-license-reserve-alert` です。チャンネル名を変更するには、`content.js` の ntfy URL を修正してください：
+**⚠️ 重要警告**: デフォルトの通知チャンネル `e-license-reserve-alert` は**共有チャンネル**です！**必ず独自のチャンネル名に変更してください**。変更しないと他の教習所の生徒からの通知を受信してしまいます。
 
 ```javascript
-xhr.open("POST", "https://ntfy.sh/あなたのチャンネル名", true);
+xhr.open("POST", "https://ntfy.sh/あなたの独自チャンネル名", true);
 ```
 
 ## 使用方法

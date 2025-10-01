@@ -16,7 +16,10 @@ It's incredibly difficult to reserve lessons at Japanese driving schools! Usuall
 ## 📱 Quick Setup
 
 1. **Install ntfy.sh app** on your mobile device for instant notifications
-2. **Customize the channel topic** in `content.js` (default: `e-license-reserve-alert`)
+2. **⚠️ IMPORTANT: Must change channel name!**
+   - Default channel `e-license-reserve-alert` is shared
+   - You'll receive notifications from other driving school students if not changed
+   - Modify it to your unique channel name in `content.js`
 3. **Only works** with driving schools that use the e-license.jp system
 
 ---
@@ -55,10 +58,10 @@ git clone https://github.com/xiao99xiao/e-license-monitor.git
 2. Subscribe to topic: `e-license-reserve-alert`
 3. Ensure the app is running in the background
 
-**Note**: Default notification channel is `e-license-reserve-alert`. To change the channel name, modify the ntfy URL in `content.js`:
+**⚠️ IMPORTANT WARNING**: Default notification channel `e-license-reserve-alert` is a **shared channel**! **You MUST change it to your unique channel name**, otherwise you'll receive notifications from other driving school students.
 
 ```javascript
-xhr.open("POST", "https://ntfy.sh/your-channel-name", true);
+xhr.open("POST", "https://ntfy.sh/your-unique-channel-name", true);
 ```
 
 ## Usage
