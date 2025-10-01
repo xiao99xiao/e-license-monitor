@@ -42,22 +42,30 @@ xhr.open("POST", "https://ntfy.sh/您的频道名称", true);
 
 ## 使用方法
 
-### 基本操作
+### 详细操作步骤
 
-1. **访问 e-license.jp 网站**
+1. **访问驾校预约系统**
 
+   - 打开浏览器，访问您的驾校 e-license.jp 页面
    - 登录您的驾校账户
-   - 导航到课程预约页面
+   - 导航到课程预约页面（第一阶段、第二阶段或检定预约）
 
 2. **启动监控**
 
-   - 点击浏览器工具栏中的扩展程序图标
-   - 点击「Start Monitor」按钮
-   - 状态显示为「Monitoring Active」
+   - 点击浏览器工具栏中的扩展程序图标（E-License Monitor）
+   - 在弹窗中点击「Start Monitor」按钮
+   - 状态显示为「Monitoring Active」表示监控已启动
+   - 扩展程序将开始监控当前页面的预约空位
 
-3. **停止监控**
-   - 点击「Stop Monitor」按钮
-   - 状态显示为「Monitoring Stopped」
+3. **监控运行**
+
+   - 扩展程序每 60 秒自动检查一次空位
+   - 发现空位时会通过 ntfy.sh 发送通知
+   - 可通过弹窗查看调试日志了解运行状态
+
+4. **停止监控**
+   - 点击扩展程序弹窗中的「Stop Monitor」按钮
+   - 状态显示为「Monitoring Stopped」表示监控已停止
 
 ### 配置选项
 
