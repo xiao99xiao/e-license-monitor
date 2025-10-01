@@ -1,6 +1,25 @@
-# Japanese Driving School Reserve Helper Chrome Extension
+# E-License Driving School Reservation Monitor
 
 [中文 (简体) 🇨🇳](README.md) | [English 🇺🇸](README.en.md) | [日本語 🇯🇵](README.ja.md)
+
+## 🚗 Tired of Waiting Weeks for Driving Lessons?
+
+It's incredibly difficult to reserve lessons at Japanese driving schools! Usually, you can only book lessons many days (like one week) in advance. This makes it take forever before you can graduate from driving school.
+
+**This extension solves that problem!** 🎯
+
+- ✅ **Automatic monitoring** every 60 seconds for available slots
+- ✅ **Instant notifications** when someone cancels their lesson
+- ✅ **Immediate booking** opportunity - reserve it before anyone else!
+- ✅ **Faster graduation** - no more waiting weeks for lessons
+
+## 📱 Quick Setup
+
+1. **Install ntfy.sh app** on your mobile device for instant notifications
+2. **Customize the channel topic** in `content.js` (default: `e-license-reserve-alert`)
+3. **Only works** with driving schools that use the e-license.jp system
+
+---
 
 A Chrome extension that monitors e-license.jp websites for available driving lesson slots and sends automatic notifications.
 
